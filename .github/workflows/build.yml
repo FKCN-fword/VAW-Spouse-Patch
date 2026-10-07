@@ -16,22 +16,17 @@ jobs:
       - name: Checkout plugin sources
         uses: actions/checkout@v4
 
-      # vcpkg must be a real git repository with history, because the
-      # manifest pins "builtin-baseline" to a specific older commit and
-      # vcpkg resolves that commit with `git show`. A shallow checkout
-      # (e.g. via actions/checkout) is NOT enough - it would fail with
-      # "failed to `git show` versions/baseline.json".
       - name: Clone vcpkg with full history
         shell: pwsh
         run: git clone https://github.com/microsoft/vcpkg.git "$env:VCPKG_ROOT"
 
       - name: Bootstrap vcpkg
         shell: pwsh
-        run: "& $env:VCPKG_ROOT\bootstrap-vcpkg.bat -disableMetrics"
+        run: '& "${env:VCPKG_ROOT}\bootstrap-vcpkg.bat" -disableMetrics'
 
       - name: Install dependencies
         shell: pwsh
-        run: "& $env:VCPKG_ROOT\vcpkg.exe install --triplet x64-windows"
+        run: '& "${env:VCPKG_ROOT}\vcpkg.exe" install --triplet x64-windows'
 
       - name: Show vcpkg logs on failure
         if: failure()
@@ -48,7 +43,7 @@ jobs:
       - name: Configure (CMake)
         shell: pwsh
         run: |
-          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 `
+          cmake -S . -B build `
             "-DCMAKE_TOOLCHAIN_FILE=$env:VCPKG_ROOT\scripts\buildsystems\vcpkg.cmake" `
             "-DVCPKG_TARGET_TRIPLET=x64-windows"
 
