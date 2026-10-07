@@ -5,11 +5,8 @@
   "description": "Runtime association-type (Spouse) switcher for Vittoria's Alternate Wedding KR",
   "license": "MIT",
   "dependencies": [
-    "commonlibsse-ng-se",
-    "spdlog",
-    "rapidcsv"
+    "commonlibsse-ng-se"
   ],
-  "builtin-baseline": "fc3f61366102c1f0d4547c06d03c523bb18c13a7",
   "vcpkg-configuration": {
     "registries": [
       {
