@@ -26,6 +26,21 @@ find_package(CommonLibSSE CONFIG REQUIRED)
 
 add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${sources})
 
+# --- Precompiled header (REQUIRED FIX) ---
+# add_commonlibsse_plugin() generates __VAWSpouseSwitcherPlugin.cpp whose
+# first line is '#include "REL/Relocation.h"'. Relocation.h is NOT
+# self-sufficient: it relies on the namespace aliases (REL::stl,
+# REL::WinAPI, std::literals) and the std-library includes that
+# "SKSE/Impl/PCH.h" sets up before it includes Relocation.h at its very
+# bottom (RE/Skyrim.h includes SKSE/Impl/PCH.h first for the same reason).
+# Precompiling that header force-includes (/FI) it into EVERY TU -
+# including the auto-generated one - which fixes:
+#   error C2653: 'stl': is not a class or namespace name
+# The double-bracket form [[...]] makes CMake resolve the header through
+# the include directories instead of the source tree.
+target_precompile_headers(${PROJECT_NAME} PRIVATE
+    [["SKSE/Impl/PCH.h"]])
+
 # --- MSVC-only flags ---
 target_compile_options(${PROJECT_NAME} PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:
