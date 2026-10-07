@@ -1,0 +1,29 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "vawspouseswitcher",
+  "version-string": "1.0.0",
+  "description": "Runtime association-type (Spouse) switcher for Vittoria's Alternate Wedding KR",
+  "license": "MIT",
+  "dependencies": [
+    "commonlibsse-ng-se",
+    "spdlog",
+    "rapidcsv"
+  ],
+  "builtin-baseline": "fc3f61366102c1f0d4547c06d03c523bb18c13a7",
+  "vcpkg-configuration": {
+    "registries": [
+      {
+        "kind": "git",
+        "repository": "https://gitlab.com/colorglass/vcpkg-colorglass",
+        "baseline": "9eae9f03f03e0ca96fce5031f44f4e64cd6debdc",
+        "packages": [
+          "commonlibsse-ng",
+          "commonlibsse-ng-ae",
+          "commonlibsse-ng-se",
+          "commonlibsse-ng-vr",
+          "commonlibsse-ng-flatrim"
+        ]
+      }
+    ]
+  }
+}
