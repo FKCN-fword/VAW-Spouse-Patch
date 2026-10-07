@@ -7,6 +7,7 @@
   "dependencies": [
     "commonlibsse-ng-se"
   ],
+  "builtin-baseline": "fc3f61366102c1f0d4547c06d03c523bb18c13a7",
   "vcpkg-configuration": {
     "registries": [
       {
