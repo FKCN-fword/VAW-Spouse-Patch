@@ -20,16 +20,27 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: microsoft/vcpkg
-          ref: fc3f61366102c1f0d4547c06d03c523bb18c13a7
           path: vcpkg
 
       - name: Bootstrap vcpkg
         shell: pwsh
-        run: .\vcpkg\bootstrap-vcpkg.bat
+        run: .\vcpkg\bootstrap-vcpkg.bat -disableMetrics
 
       - name: Install dependencies
         shell: pwsh
-        run: .\vcpkg\vcpkg.exe install --triplet x64-windows
+        run: .\vcpkg\vcpkg.exe install --triplet x64-windows --debug
+
+      - name: Show vcpkg logs on failure
+        if: failure()
+        shell: pwsh
+        run: |
+          Write-Host "=============== vcpkg buildtrees logs ==============="
+          Get-ChildItem -Path vcpkg\buildtrees -Recurse -Include *.log -ErrorAction SilentlyContinue |
+            ForEach-Object {
+              Write-Host ""
+              Write-Host "########## $($_.FullName) ##########"
+              Get-Content $_.FullName -Tail 60
+            }
 
       - name: Configure (CMake)
         shell: pwsh
